@@ -102,3 +102,4 @@ ENV/
 
 # mac dump file
 .DS_Store
+.idea/
