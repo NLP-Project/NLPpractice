@@ -52,3 +52,4 @@ for i in range(len(content_array)):
 	cnt = Counter(noun_token)
 	pprint(cnt.most_common(10))
 	print('\n')
+	print("hyunho test")
