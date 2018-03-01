@@ -7,7 +7,7 @@ from collections import Counter
 
 
 kkma = Kkma()
-driver = webdriver.PhantomJS('./phantomjs-2.1.1-macosx/bin/phantomjs')
+driver = webdriver.PhantomJS('./phantomjs')
 
 
 base_url = 'https://brunch.co.kr'
