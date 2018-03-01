@@ -41,6 +41,7 @@ getUrl(path_array, title_array)
 getContent(path_array, content_array)
 
 for i in range(len(content_array)):
+	print('**********' + str(i) + '************')
 	print('***************' + title_array[i] + '******************')
 	tokenized_contents = kkma.pos(content_array[i])
 	noun_token = []
