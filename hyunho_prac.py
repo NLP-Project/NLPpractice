@@ -1,3 +1,4 @@
+
 from gensim.models import Word2Vec
 from konlpy.corpus import kobill
 import dbConnection as db
@@ -30,20 +31,8 @@ for i in range( len( doc_ko ) ) :
     noun_token.append( tokens_ko )
 
 
-
-#doc_ko = [ '26개 주사위로 이뤄진 정육면체' , '단 0.38초만에 맞추는 로봇이 나왔다.' ]
-
-
-
 from konlpy.tag import Twitter; t = Twitter()
 
-'''
-noun_token = []
-for i in range( len( doc_ko ) ) :
-    tokens_ko = t.morphs( doc_ko[i] )
-    noun_token.append( tokens_ko )
-
-'''
 
 print( "noun_token")
 print( noun_token )
@@ -66,5 +55,6 @@ for i in range(len(noun_token)):  # 문장개수
 
 from operator import itemgetter
 
+priority_arr = list(set(priority_arr))
 priority_arr = sorted(priority_arr, key=itemgetter(1), reverse=True)  # sort by Second Value
 print(priority_arr)
