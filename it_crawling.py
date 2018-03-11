@@ -7,7 +7,7 @@ from collections import Counter
 
 
 kkma = Kkma()
-driver = webdriver.PhantomJS('./phantomjs-2.1.1-macosx/bin/phantomjs')
+driver = webdriver.PhantomJS('./phantomjs')
 
 
 base_url = 'https://brunch.co.kr'
@@ -41,6 +41,7 @@ getUrl(path_array, title_array)
 getContent(path_array, content_array)
 
 for i in range(len(content_array)):
+	print('**********' + str(i) + '************')
 	print('***************' + title_array[i] + '******************')
 	tokenized_contents = kkma.pos(content_array[i])
 	noun_token = []
@@ -51,3 +52,4 @@ for i in range(len(content_array)):
 	cnt = Counter(noun_token)
 	pprint(cnt.most_common(10))
 	print('\n')
+	print("hyunho test")
