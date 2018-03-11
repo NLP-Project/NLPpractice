@@ -1,21 +1,49 @@
 from gensim.models import Word2Vec
 from konlpy.corpus import kobill
+import dbConnection as db
 
 
 files_ko = kobill.fileids()
 
+doc_ko = [] # array 선언
 
-doc_ko = [ '26개 주사위로 이뤄진 정육면체' , '단 0.38초만에 맞추는 로봇이 나왔다.' ]
+try:
+    with db.connection.cursor() as cursor:
+        sql = "SELECT content FROM tmp_npl"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+        for i in range(len(result)):
+            doc_ko.append(result[i][0])
+finally:
+    db.connection.close()
+
+
+# print(doc_ko)
+from konlpy.tag import Twitter; t = Twitter()
+
+noun_token = []
+
+
+for i in range( len( doc_ko ) ) :
+    tokens_ko = t.morphs( doc_ko[i] ) #의미단어 검출
+    noun_token.append( tokens_ko )
+
+
+
+#doc_ko = [ '26개 주사위로 이뤄진 정육면체' , '단 0.38초만에 맞추는 로봇이 나왔다.' ]
 
 
 
 from konlpy.tag import Twitter; t = Twitter()
 
+'''
 noun_token = []
 for i in range( len( doc_ko ) ) :
     tokens_ko = t.morphs( doc_ko[i] )
     noun_token.append( tokens_ko )
 
+'''
 
 print( "noun_token")
 print( noun_token )
