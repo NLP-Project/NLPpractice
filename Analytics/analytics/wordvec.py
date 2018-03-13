@@ -17,8 +17,8 @@ def getToken():
 
 def learnVector(wordToken):
 	model = Word2Vec.load('./analytics/vector.model')
-	model.train(wordToken)
-	model.save('./vector.model')
+	model.train(wordToken, total_examples=model.corpus_count, epochs=model.iter)
+	model.save('./analytics/vector.model')
 
 def getMostNoun(article, twitter):
 	mostNoun = []
