@@ -95,7 +95,7 @@ def LoadModel() :
 
 
 def article_similarity(article_1, article_2):
-    return (int)(abs(model.wv.similarity(article_1,article_1)) * 100)
+    return abs(model.wv.similarity(article_1,article_2))
 
 
 
