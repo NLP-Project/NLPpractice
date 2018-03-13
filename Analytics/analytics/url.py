@@ -1,10 +1,10 @@
 import requests
-from config import db
+from analytics.config import db
 from bs4 import BeautifulSoup as Soup
 from selenium import webdriver
+from collections import Counter
 
-
-driver = webdriver.PhantomJS('./phantomjs')
+driver = webdriver.PhantomJS('./analytics/phantomjs')
 baseUrl = 'https://brunch.co.kr'
 
 categoryList = {
