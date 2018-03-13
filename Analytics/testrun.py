@@ -1,9 +1,11 @@
 from Analytics.analytics import content, wordvec
 
 
-def init():
-    content.getContent()
-    token = wordvec.getToken()
-    wordvec.learnVector(token)
+def run():
+	content.getContent()
+	token = wordvec.getToken()
+	# if len(token) > 0 :
+	# 	wordvec.learnVector(token)
 
-init()
+run()
+

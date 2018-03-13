@@ -1,10 +1,10 @@
 import requests
-from config import db
+from analytics.config import db
 from bs4 import BeautifulSoup as Soup
 from selenium import webdriver
+from collections import Counter
 
-
-driver = webdriver.PhantomJS('./phantomjs')
+driver = webdriver.PhantomJS('./analytics/phantomjs')
 baseUrl = 'https://brunch.co.kr'
 
 categoryList = {
@@ -27,7 +27,7 @@ def getUrl(category):
 	for i in range(len(tmpPath)):
 		pathList.append(tmpPath[i].get('href'))
 	driver.quit()
-	lastUrl = db.getAriticleHistory(category)
+	lastUrl = db.getArticleHistory(category)
 	for i in range(len(pathList)):
 		if lastUrl == pathList[i]:
 			pathList = pathList[0:i]
