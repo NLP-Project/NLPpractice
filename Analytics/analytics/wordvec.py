@@ -1,9 +1,10 @@
 from gensim.models import Word2Vec
 from konlpy.tag import Twitter
-from analytics.config import db
+from Analytics.analytics.config import db
 from collections import Counter
 
 
+# noinspection PyUnresolvedReferences
 def getToken():
 	token = []
 	t = Twitter()
@@ -20,12 +21,13 @@ def learnVector(wordToken):
 	model.train(wordToken, total_examples=model.corpus_count, epochs=model.iter)
 	model.save('./analytics/vector.model')
 
+
 def getMostNoun(article, twitter):
-	mostNoun = []
-	cntNoun = twitter.nouns(article)
-	tmpCount = []
-	for i in range(len(cntNoun)):
-		if len(cntNoun[i])>1:
-			tmpCount.append(cntNoun[i])
-	mostNoun.append(Counter(tmpCount).most_common(5))
-	return mostNoun
+    mostNoun = []
+    cntNoun = twitter.nouns(article)
+    tmpCount = []
+    for i in range(len(cntNoun)):
+        if len(cntNoun[i]) > 1 :
+            tmpCount.append(cntNoun[i])
+    mostNoun.append(Counter(tmpCount).most_common(5))
+    return  mostNoun

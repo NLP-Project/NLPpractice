@@ -1,4 +1,5 @@
-from analytics import content, wordvec
+from Analytics.analytics import content, wordvec
+
 
 def run():
 	content.getContent()
@@ -7,3 +8,4 @@ def run():
 		wordvec.learnVector(token)
 
 run()
+
