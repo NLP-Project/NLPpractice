@@ -61,7 +61,7 @@ finally:
 
 
 print( "noun_token")
-print(noun_token)
+print(noun_token[0])
 print()
 
 
@@ -69,7 +69,7 @@ print()
 print('*********************************')
 
 model = Word2Vec( noun_token , min_count = 1 , iter = 1000 )
-
+print(model.wv.vocab)
 priority_arr = []
 
 
@@ -85,4 +85,22 @@ for i in range(len(noun_token)):  # 문장개수
 from operator import itemgetter
 
 priority_arr = sorted(priority_arr, key=itemgetter(1), reverse=True)  # sort by Second Value
-print(priority_arr)
+# print(priority_arr)
+
+
+
+
+
+
+def LoadModel() :
+    return Word2Vec.load('./word2vec.model')
+
+
+# model.save('./word2vec.model')
+# model = LoadModel()
+
+
+
+def article_similarity(article_1, article_2):
+    return abs(model.wv.similarity(article_1,article_2))
+

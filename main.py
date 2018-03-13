@@ -5,7 +5,6 @@ from konlpy.corpus import kobill
 import dbConnection as db
 
 files_ko = kobill.fileids()
-
 doc_ko = [] # array 선언
 
 try:
@@ -19,25 +18,24 @@ try:
 finally:
     cursor.close()
 
-# print(doc_ko)
-# print(len(doc_ko))
 
 
 from konlpy.tag import Twitter;
-
 t = Twitter()
 
 noun_token = []
-
 rep_noun = [] # rep is representation
-from collections import Counter
 
+from collections import Counter
 for i in range( len( doc_ko ) ) :
-    tokens_ko = t.nouns(doc_ko[i]) #의미단어 검출
+    tokens_ko = t.morphs(doc_ko[i])
+    noun_token.append(tokens_ko)
+
+    cnt_tokens_ko = t.nouns(doc_ko[i]) #의미단어 검출
     tmp_arr = []
-    for j in range(len(tokens_ko)):
-        if len(tokens_ko[j]) >1:
-            tmp_arr.append(tokens_ko[j])
+    for j in range(len(cnt_tokens_ko)):
+        if len(cnt_tokens_ko[j]) >1:
+            tmp_arr.append(cnt_tokens_ko[j])
             cnt = Counter(tmp_arr)
     noun_token.append(tmp_arr)
     rep_noun.append(cnt.most_common(5))
@@ -60,28 +58,34 @@ finally:
 '''
 
 
+
+
+print( "noun_token")
+print(noun_token[0])
+print()
+
+
+
 print('*********************************')
-print(noun_token)
-model = Word2Vec(noun_token, iter=1000)
-print('*********************************')
+
+model = Word2Vec( noun_token , min_count = 1 , iter = 1000 )
 print(model.wv.vocab)
 priority_arr = []
 
-print(model.most_similar('거리'))
+
 for i in range(len(noun_token)):  # 문장개수
     for j in range(len(noun_token[i])):  # 해당문장의 단어수
-        print(noun_token[i][j])
-        similarity = (int)(abs(model.wv.similarity('거리', noun_token[i][j])) * 100)
+        similarity = (int)(abs(model.wv.similarity('해마다', noun_token[i][j])) * 100)
         _a = t.pos(noun_token[i][j])
         if _a[0][1] == "Noun" and _a[0][1] == "에서" and len(_a[0][0]) > 1:
             _tuple = noun_token[i][j], similarity
             priority_arr.append(_tuple)
 
+
 from operator import itemgetter
 
-priority_arr = list(set(priority_arr))
 priority_arr = sorted(priority_arr, key=itemgetter(1), reverse=True)  # sort by Second Value
-print(priority_arr)
+# print(priority_arr)
 
 
 
@@ -99,6 +103,4 @@ def LoadModel() :
 
 def article_similarity(article_1, article_2):
     return abs(model.wv.similarity(article_1,article_2))
-
-
 
