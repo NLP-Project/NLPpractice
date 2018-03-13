@@ -27,7 +27,7 @@ def getUrl(category):
 	for i in range(len(tmpPath)):
 		pathList.append(tmpPath[i].get('href'))
 	driver.quit()
-	lastUrl = db.getAriticleHistory(category)
+	lastUrl = db.getArticleHistory(category)
 	for i in range(len(pathList)):
 		if lastUrl == pathList[i]:
 			pathList = pathList[0:i]
