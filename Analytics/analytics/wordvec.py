@@ -4,15 +4,16 @@ from Analytics.analytics.config import db
 from collections import Counter
 # noinspection PyUnresolvedReferences
 
+
 def getToken():
-	token = []
-	t = Twitter()
-	mostNounList = []
-	articleList = db.getArticle()
-	for i in range(len(articleList)):
-		token.append(t.morphs(articleList[i]))
-		mostNounList.append(getMostNoun(articleList[i], t))
-	return token
+    token = []
+    t = Twitter()
+    mostNounList = []
+    articleList = db.getArticle()
+    for i in range(len(articleList)):
+        token.append(t.morphs(articleList[i]))
+        mostNounList.append(getMostNoun(articleList[i]))
+    return token
 
 def learnVector(wordToken):
 	model = Word2Vec.load('./analytics/vector.model')
@@ -20,7 +21,8 @@ def learnVector(wordToken):
 	model.save('./analytics/vector.model')
 
 
-def getMostNoun(article, twitter):
+def getMostNoun(article):
+    twitter = Twitter()
     mostNoun = []
     cntNoun = twitter.nouns(article)
     tmpCount = []

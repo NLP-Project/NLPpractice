@@ -1,13 +1,15 @@
 from gensim.models import Word2Vec
 from Analytics.analytics.config import db
+from Analytics.analytics import wordvec
 
 
-def dbQUery_insert(sql):
-    print(sql)
+
+
+def dbQUery_insert(sql,insertData):
     conn = db.getConnection()
     try:
         with conn.cursor() as cursor:
-            cursor.execute(sql)
+            cursor.execute(sql,insertData)
             conn.commit()
     finally:
         conn.close()
@@ -70,12 +72,32 @@ def init_btw_article_similarity():
 
             for a in range(loop_per_cnt):
                 for b in range(loop_per_cnt):
-                    similarity_value += article_similarity(article1_rep_noun[0][a + 1],
-                                                                   article2_rep_noun[0][b + 1])
+                    similarity_value += article_similarity(article1_rep_noun[0][a + 1],article2_rep_noun[0][b + 1])
 
-            insertQuery = "INSERT INTO article_similarity_value(article1, article2, similarity_value) VALUES ("
-            dbQUery_insert(
-                insertQuery + str(result[i][0]) + "," + str(result[j][0]) + "," + str(similarity_value) + ")")
+            insertQuery = "INSERT INTO article_similarity_value(article1, article2, similarity_value) VALUES ( %s , %s, %s )"
+            insertData = (str(result[i][0]) , str(result[j][0]) , str(similarity_value))
+            dbQUery_insert(insertQuery, insertData)
 
             j += 1
+
+
+
+def insertRepresentationNoun():
+    selectSQL= " SELECT id, content FROM article"
+    selectResult = dbQUery(selectSQL)
+
+    try:
+        for i in range(len(selectResult)):
+            mostNounResult = wordvec.getMostNoun(selectResult[i][1])
+
+            sql = "INSERT INTO article_representation_noun(id, noun_1, noun_2, noun_3, noun_4, noun_5) VALUES ( %s, %s, %s, %s, %s, %s) "
+            insertData = ( str(selectResult[i][0]), mostNounResult[0][0][0], mostNounResult[0][1][0], mostNounResult[0][2][0] ,mostNounResult[0][3][0] ,mostNounResult[0][4][0] )
+            dbQUery_insert(sql, insertData)
+
+    except Exception as ex:  # 에러 종류
+        print('Error Break : ', ex)  # ex는 발생한 에러의 이름을 받아오는 변수
+
+    finally:
+        print(" End insertRepresentationNoun ")
+
 
