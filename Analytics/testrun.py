@@ -1,7 +1,7 @@
-from Analytics.analytics import content, wordvec, def_set
+from Analytics.analytics import content, wordvec
 
 def run():
-    # content.getContent()
+    content.getContent()
     token = wordvec.getToken()
     print(token)
     # if len(token) > 0 :
