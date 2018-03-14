@@ -2,7 +2,7 @@ from gensim.models import Word2Vec
 from konlpy.tag import Twitter
 from Analytics.analytics.config import db
 from collections import Counter
-# noinspection PyUnresolvedReferences
+
 
 
 def getToken():

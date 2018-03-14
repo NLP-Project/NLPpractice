@@ -5,7 +5,7 @@ from Analytics.analytics import wordvec
 
 
 
-def dbQUery_insert(sql,insertData):
+def dbQuery_insert(sql,insertData):
     conn = db.getConnection()
     try:
         with conn.cursor() as cursor:
@@ -15,7 +15,7 @@ def dbQUery_insert(sql,insertData):
         conn.close()
 
 
-def dbQUery(sql) :
+def dbQuery(sql) :
     result = []
     conn = db.getConnection()
     try:
@@ -42,7 +42,7 @@ def article_similarity(article_1, article_2):
 # 초기에 1번만 실행
 def init_btw_article_similarity():
     sql = "SELECT id,content FROM article"
-    result = dbQUery(sql)
+    result = dbQuery(sql)
     '''
     print(result[0]) # ( (id,content) )
     print(result[0][0]) # id
@@ -53,19 +53,15 @@ def init_btw_article_similarity():
         j = i + 1
         sql = "SELECT * FROM article_representation_noun WHERE id = "
         param = str(result[i][0])
-        article1_rep_noun = dbQUery(sql + param)
+        article1_rep_noun = dbQuery(sql + param)
         # print(article1_rep_noun)
         # [(20, '보드', '주행', '전동', '타이어', '제품')]
 
         while j < len(result):
             param = str(result[j][0])
-            article2_rep_noun = dbQUery(sql + param)
-            # print(article2_rep_noun)
+            article2_rep_noun = dbQuery(sql + param)
+            print("article2_rep_noun : " , article2_rep_noun)
             # [(21, '보드', '주행', '전동', '타이어', '제품')]
-
-            if result[j][0] == 38:
-                print("지금 DB에 id값이 38까지 밖에 없어서 임시로 Break")
-                break
 
             similarity_value = 0
             loop_per_cnt = 5
@@ -76,7 +72,7 @@ def init_btw_article_similarity():
 
             insertQuery = "INSERT INTO article_similarity_value(article1, article2, similarity_value) VALUES ( %s , %s, %s )"
             insertData = (str(result[i][0]) , str(result[j][0]) , str(similarity_value))
-            dbQUery_insert(insertQuery, insertData)
+            dbQuery_insert(insertQuery, insertData)
 
             j += 1
 
@@ -84,7 +80,7 @@ def init_btw_article_similarity():
 
 def insertRepresentationNoun():
     selectSQL= " SELECT id, content FROM article"
-    selectResult = dbQUery(selectSQL)
+    selectResult = dbQuery(selectSQL)
 
     try:
         for i in range(len(selectResult)):
@@ -92,12 +88,12 @@ def insertRepresentationNoun():
 
             sql = "INSERT INTO article_representation_noun(id, noun_1, noun_2, noun_3, noun_4, noun_5) VALUES ( %s, %s, %s, %s, %s, %s) "
             insertData = ( str(selectResult[i][0]), mostNounResult[0][0][0], mostNounResult[0][1][0], mostNounResult[0][2][0] ,mostNounResult[0][3][0] ,mostNounResult[0][4][0] )
-            dbQUery_insert(sql, insertData)
+            dbQuery_insert(sql, insertData)
 
     except Exception as ex:  # 에러 종류
         print('Error Break : ', ex)  # ex는 발생한 에러의 이름을 받아오는 변수
 
     finally:
-        print(" End insertRepresentationNoun ")
+        print(" End :: Function insertRepresentationNoun ")
 
 
