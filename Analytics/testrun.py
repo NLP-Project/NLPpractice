@@ -1,7 +1,7 @@
 from Analytics.analytics import content, wordvec, def_set
 
 def run():
-    content.getContent()
+    # content.getContent()
     token = wordvec.getToken()
     print(token)
     # if len(token) > 0 :
@@ -10,9 +10,6 @@ def run():
 
 # run()
 
+
 print("========")
-def_set.init_btw_article_similarity()
-
-
-
 
