@@ -1,9 +1,8 @@
 import requests
-from analytics.config import db 
+from Analytics.analytics.config import db
 from bs4 import BeautifulSoup as Soup
-from analytics.url import getUrl
+from Analytics.analytics.url import getUrl
 from selenium import webdriver
-
 baseUrl = 'https://brunch.co.kr'
 
 def getContent():
@@ -22,6 +21,6 @@ def getContent():
                 tmp_content += content[j].get_text('data-app')
             contentList.append(tmp_content.replace("data-app",""))
             titleList.append(title)
+
     if len(titleList) > 0 :
-        print("here")
         db.insertArticle(titleList, contentList, urlList)

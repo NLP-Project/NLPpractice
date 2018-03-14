@@ -1,5 +1,5 @@
 import requests
-from analytics.config import db
+from Analytics.analytics.config import db
 from bs4 import BeautifulSoup as Soup
 from selenium import webdriver
 from collections import Counter
@@ -19,19 +19,20 @@ categoryList = {
 }
 
 def getUrl(category):
-	driver.get(baseUrl + categoryList[category])
-	html = driver.page_source
-	soup = Soup(html, "html.parser")
-	tmpPath = soup.find_all(class_ = "link_post")
-	pathList = []
-	for i in range(len(tmpPath)):
-		pathList.append(tmpPath[i].get('href'))
-	driver.quit()
-	lastUrl = db.getArticleHistory(category)
-	for i in range(len(pathList)):
-		if lastUrl == pathList[i]:
-			pathList = pathList[0:i]
-			break
-	if len(pathList) > 0 :
-		db.updateHistory(category, pathList[0])
-	return pathList
+    driver.get(baseUrl + categoryList[category])
+    html = driver.page_source
+    soup = Soup(html, "html.parser")
+    tmpPath = soup.find_all(class_ = "link_post")
+    pathList = []
+    for i in range(len(tmpPath)):
+        pathList.append(tmpPath[i].get('href'))
+    driver.quit()
+    lastUrl = db.getArticleHistory(category)
+    for i in range(len(pathList)):
+        if lastUrl == pathList[i]:
+            pathList = pathList[0:i]
+            break
+    if len(pathList) > 0 :
+        db.updateHistory(category, pathList[0])
+    return pathList
+
